@@ -1,4 +1,4 @@
-use std::{collections::{BTreeMap, BTreeSet}, fs::read_to_string};
+use std::{collections::BTreeSet, fs::read_to_string};
 
 const DIRECTIONS: &'static [(i64, i64)] = &[(-1, 0), (0, 1), (1, 0), (0, -1)];
 
@@ -22,8 +22,8 @@ fn main() {
         visited.insert((x, y));
         let nx = x + DIRECTIONS[d].0;
         let ny = y + DIRECTIONS[d].1;
-        match (usize::try_from(nx).ok().zip(usize::try_from(ny).ok())
-            .and_then(|(nx, ny)| map.get(nx).and_then(|row| row.get(ny)))) {
+        match usize::try_from(nx).ok().zip(usize::try_from(ny).ok())
+            .and_then(|(nx, ny)| map.get(nx).and_then(|row| row.get(ny))) {
                 Some(b'.') | Some(b'^') => (x, y) = (nx, ny),
                 Some(b'#') => d = (d+1) % 4,
                 None => break,
