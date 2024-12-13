@@ -31,19 +31,32 @@ fn main() {
                 total_cost += cost;
             }
         } else {
-            let (p, q, g) = gcd(xa, xb);
-            if x % g != 0 || y % g != 0 {
-                continue;
-            }
-            
-            let k = if 3 * xb - xa > 0 {
-                - g * p / xb
+            let mut min_cost = -1;
+            if 3 * xb > xa {
+                // minimize a
+                for a in 0..=100 {
+                    let b = (x - xa*a) / xb;
+                    if validate(a, b, xa, xb, ya, yb, x, y) {
+                        let cost = 3 * a + b;
+                        min_cost = cost;
+                        break;
+                    }
+                }
             } else {
-                g * q / xa
-            };
-            let a = p + xb * k / g;
-            let b = q + xa * k / g;
-            total_cost += 3 * a + b;
+                // maximize a
+                let max_a = x / xa;
+                for a in (max_a - 100..=max_a).rev() {
+                    let b = (x - xa*a) / xb;
+                    if validate(a, b, xa, xb, ya, yb, x, y) {
+                        let cost = 3 * a + b;
+                        min_cost = cost;
+                        break;
+                    }
+                }
+            }
+            if min_cost >= 0 {
+                total_cost += min_cost;
+            }
         }
     }
     
@@ -64,16 +77,6 @@ fn validate(a: i64, b: i64, xa: i64, xb: i64, ya: i64, yb: i64, x: i64, y: i64) 
     }
     
     return true;
-}
-
-fn gcd(a: i64, b: i64) -> (i64, i64, i64) {
-    let c = a % b;
-    if c == 0 {
-        return (0, 1, b);
-    }
-    let d = a / b;
-    let (x, y, g) = gcd(b, c);
-    (y, x - d * y, g)
 }
 
 fn read_lines(filename: &str) -> Vec<String> {
