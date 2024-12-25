@@ -1,0 +1,16 @@
+[package]
+name = "day25"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "0.8.5"
+regex = "1.11.1"
+
+[[bin]]
+name = "a"
+path = "src/main-a.rs"
+
+[[bin]]
+name = "b"
+path = "src/main-b.rs"
